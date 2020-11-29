@@ -6,8 +6,6 @@ from time import mktime
 import base64
 from requests import request
 from pprint import pprint
-import json
-import math
 
 app_id = 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF'
 app_key = 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF'
@@ -27,6 +25,7 @@ class Auth():
                         'algorithm="hmac-sha1", ' + \
                         'headers="x-date", ' + \
                         'signature="' + signature + '"'
+        #pprint(authorization)
         return {
             'Authorization': authorization,
             'x-date': format_date_time(mktime(datetime.now().timetuple())),
@@ -36,6 +35,5 @@ class Auth():
 
 if __name__ == '__main__':
     a = Auth(app_id, app_key)
-    response = request('get', 'https://ptx.transportdata.tw/MOTC/v3/Bus/Station/City/Tainan?$format=JSON', 
-    headers= a.get_auth_header())
+    response = request('get', 'https://ptx.transportdata.tw/MOTC/v3/Bus/Station/City/Tainan?$top=30&$format=JSON', headers= a.get_auth_header())
     pprint(response.content)
